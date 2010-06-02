@@ -14,9 +14,6 @@ all: dromadie
 clean:
 	rm -rf *.cmi *.cmo *.cmx *.o *.obj *.opt *~ dromadie
 
-tar:
-	(cd ..; tar cvf - lablgtk2_tutorial_src | gzip -c > lablgtk2_tutorial_src.tar.gz)
-
 .SUFFIXES: .ml .cmo .cmx .opt
 
 dromadie: $(TARGETS)
