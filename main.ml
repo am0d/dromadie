@@ -38,10 +38,18 @@ let main () =
     let menu = create_menu "File" menubar in
     GToolbox.build_menu menu ~entries:file_menu_entries;
 
+    (* Create the toolbar *)
+    let toolbar = GButton.toolbar ~packing:vbox1#add () in
+    toolbar#insert_button ~text:"B" ();
+    toolbar#insert_space ();
+    toolbar#insert_button ~text:"I" ();
+
     (* The body of the window *)
     let box1 = GPack.hbox ~spacing:5 ~packing:vbox1#add () in
     GMisc.label ~text:"Tree placeholder" ~packing:box1#pack ();
-    GMisc.label ~text:"Sourceview placeholder" ~packing:box1#pack ();
+    let source_notebook = GPack.notebook ~packing:box1#pack () in
+    let t_label = GMisc.label ~text:"Sourceview placeholder" () in
+    source_notebook#append_page t_label#coerce;
     window#show ();
     GMain.Main.main ()
 
