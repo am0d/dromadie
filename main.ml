@@ -34,24 +34,25 @@ let main () =
 
     (* Create the menus *)
     let vbox1 = GPack.vbox ~spacing:5 ~packing:window#add () in
-    let menubar = GMenu.menu_bar ~packing:vbox1#add () in
+    let menubar = GMenu.menu_bar ~packing:(vbox1#pack ~expand:false) () in
     let menu = create_menu "File" menubar in
     GToolbox.build_menu menu ~entries:file_menu_entries;
 
     (* Create the toolbar *)
-    let toolbar = GButton.toolbar ~packing:vbox1#add () in
+    let toolbar = GButton.toolbar ~packing:(vbox1#pack ~expand:false) () in
     toolbar#insert_button ~text:"B" ();
     toolbar#insert_space ();
     toolbar#insert_button ~text:"I" ();
 
     (* The body of the window *)
-    let box1 = GPack.hbox ~spacing:5 ~packing:vbox1#add () in
-    GMisc.label ~text:"Tree placeholder" ~packing:box1#pack ();
-    let source_notebook = GPack.notebook ~packing:box1#pack () in
-    let t_label = GMisc.label ~text:"Sourceview placeholder" () in
-    source_notebook#append_page t_label#coerce;
-    let source_view = GSourceView.source_view () in
+    let hbox1 = GPack.hbox ~spacing:5 ~packing:(vbox1#pack ~expand:true) () in
+    GMisc.label ~text:"Tree placeholder" ~packing:hbox1#pack ();
+    let source_notebook = GPack.notebook ~packing:(hbox1#pack ~expand:true) () in
+    let source_view = GSourceView.source_view ~width:640 ~height:480
+        ~auto_indent:true ~insert_spaces_instead_of_tabs:true
+        ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true () in
     source_notebook#append_page source_view#coerce;
+    window#set_allow_shrink true;
     window#show ();
     GMain.Main.main ()
 
