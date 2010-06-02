@@ -2,6 +2,7 @@
 *.cmo
 *.cmx
 *.cma
+*.omc
 *.opt
 *.o
 *.obj
