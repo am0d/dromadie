@@ -50,6 +50,8 @@ let main () =
     let source_notebook = GPack.notebook ~packing:box1#pack () in
     let t_label = GMisc.label ~text:"Sourceview placeholder" () in
     source_notebook#append_page t_label#coerce;
+    let source_view = GSourceView.source_view () in
+    source_notebook#append_page source_view#coerce;
     window#show ();
     GMain.Main.main ()
 
