@@ -1,3 +1,5 @@
+open Util
+
 (* Print a message to the terminal *)
 let print msg () =
     print_endline msg;
@@ -34,6 +36,8 @@ let create_menu label menubar =
     GMenu.menu ~packing:item#set_submenu ()
 
 let main () =
+    (* Parse the command line arguments to see what we need to do *)
+    parse_args ();
     (* Setup the window *)
     GMain.Main.init ();
     let window = GWindow.window ~title:"Dromadie" () in

@@ -2,12 +2,12 @@
 LIBS = lablgtk.cma lablgtksourceview.cma gtkInit.cmo
 # CUSTOM = -custom
 
-CAML_FLAGS = $(CUSTOM) -warn-error As -I +lablgtk2
+CAML_FLAGS = $(CUSTOM) -warn-error As -w Aelzs -I +lablgtk2
 
 SRCS = \
-       main.ml
+      util.ml main.ml
 
-TARGETS = $(SRCS:.ml=.cmo)
+OBJS = $(SRCS:.ml=.cmo)
 
 all: dromadie
 
@@ -16,8 +16,8 @@ clean:
 
 .SUFFIXES: .ml .cmo .cmx .opt
 
-dromadie: $(TARGETS)
-	ocamlc $(CAML_FLAGS) -o $@ $(LIBS) $<
+dromadie: $(OBJS)
+	ocamlc $(CAML_FLAGS) -o $@ $(LIBS) $(OBJS)
 
 .ml.cmo:
 	ocamlc -c $(CAML_FLAGS) $<

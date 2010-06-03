@@ -104,6 +104,7 @@ OCAML_LINK_FLAGS +=
 
 FILES[] =
     main
+    util
 #
 PROGRAM = dromadie
 # OCAML_LIBS +=
