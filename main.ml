@@ -35,6 +35,16 @@ let create_menu label menubar =
     let item = GMenu.menu_item ~label ~packing:menubar#append () in
     GMenu.menu ~packing:item#set_submenu ()
 
+(* Helper function for adding a new source tab *)
+let add_source_pane buf (notebook:GPack.notebook) () =
+    let scrolled_win = GBin.scrolled_window
+    ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC ~packing:notebook#add () in
+    let source_view = GSourceView.source_view ~width:640 ~height:480
+    ~auto_indent:true ~insert_spaces_instead_of_tabs:true
+    ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true () 
+    ~packing:scrolled_win#add in
+    source_view#source_buffer#set_text buf
+
 let main () =
     (* Parse the command line arguments to see what we need to do *)
     let file = parse_args () in
@@ -66,11 +76,7 @@ let main () =
 
     (* And the sourceviews on the right *)
     let source_notebook = GPack.notebook ~packing:(hbox1#pack ~expand:true) () in
-    let source_view = GSourceView.source_view ~width:640 ~height:480
-        ~auto_indent:true ~insert_spaces_instead_of_tabs:true
-        ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true () in
-    source_notebook#append_page source_view#coerce;
-    source_view#source_buffer#set_text file;
+    add_source_pane file source_notebook ();
 
     (* Show the window *)
     window#set_allow_shrink true;
