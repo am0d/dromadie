@@ -12,7 +12,7 @@ OBJS = $(SRCS:.ml=.cmo)
 all: dromadie
 
 clean:
-	rm -rf *.cmi *.cmo *.cmx *.o *.obj *.opt *~ dromadie
+	rm -rf *.cmi *.cmo *.cmx *.omc *.o *.obj *.opt *~ dromadie
 
 .SUFFIXES: .ml .cmo .cmx .opt
 
