@@ -1,7 +1,8 @@
-## Dromadie
-#### An OCaml IDE, written in OCaml using GTK2+ and GtkSourceView
+# Dromadie
+## An OCaml IDE, written in OCaml using GTK2+ and GtkSourceView
 
-1. Building
+1. #####Building
+
     You have 2 options for building Dromadie.  The first (and preferred method) is using `omake`.
     To build with `omake`, change into the Dromadie directory and type
 
@@ -12,7 +13,8 @@
     Note, however, that if you use the standard Makefile, no package checks are performed, whereas
     omake will check that you have the required packages installed on your system.
 
-2. Requirements
+2. #####Requirements
+
     Requirements are quite minimal for Dromadie - you have to have `lablgtk` and GtkSourceView
     installed.
 
