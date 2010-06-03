@@ -37,7 +37,7 @@ let create_menu label menubar =
 
 let main () =
     (* Parse the command line arguments to see what we need to do *)
-    parse_args ();
+    let file = parse_args () in
     (* Setup the window *)
     GMain.Main.init ();
     let window = GWindow.window ~title:"Dromadie" () in
@@ -70,6 +70,7 @@ let main () =
         ~auto_indent:true ~insert_spaces_instead_of_tabs:true
         ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true () in
     source_notebook#append_page source_view#coerce;
+    source_view#source_buffer#set_text file;
 
     (* Show the window *)
     window#set_allow_shrink true;

@@ -5,7 +5,7 @@ LIBS = lablgtk.cma lablgtksourceview.cma gtkInit.cmo
 CAML_FLAGS = $(CUSTOM) -warn-error As -w Aelzs -I +lablgtk2
 
 SRCS = \
-      util.ml main.ml
+     files.ml util.ml main.ml 
 
 OBJS = $(SRCS:.ml=.cmo)
 
