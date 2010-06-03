@@ -37,17 +37,23 @@ let create_menu label menubar =
     GMenu.menu ~packing:item#set_submenu ()
 
 (* Helper function for adding a new source tab *)
-let add_source_pane fn title (notebook:GPack.notebook) () =
-    let tlabel = GMisc.label ~text:title () in
+let add_source_pane fn (notebook:GPack.notebook) () =
+    (* The title for the tab *)
+    let tlabel = GMisc.label ~text:fn () in
+    (* Create a scrolled window *)
     let scrolled_win = GBin.scrolled_window
     ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC 
     ~packing:(fun w -> ignore(notebook#append_page ~tab_label:tlabel#coerce w)) () in
+    (* Create and add our source view *)
     let source_view = GSourceView.source_view ~width:640 ~height:480
     ~auto_indent:true ~insert_spaces_instead_of_tabs:true
     ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true () 
     ~packing:scrolled_win#add in
+    (* Read in the file and display it *)
     let buf = read_file fn in
-    source_view#source_buffer#set_text buf
+    source_view#source_buffer#set_text buf;
+    source_view#source_buffer#set_language get_lang;
+    source_view#source_buffer#set_highlight true
 
 let main () =
     (* Parse the command line arguments to see what we need to do *)
@@ -81,7 +87,7 @@ let main () =
     (* And the sourceviews on the right *)
     let source_notebook = GPack.notebook ~packing:(hbox1#pack ~expand:true) () in
     for i=0 to Array.length files - 1 do
-        add_source_pane files.(i) files.(i) source_notebook ()
+        add_source_pane files.(i) source_notebook ()
     done;
 
     (* Show the window *)

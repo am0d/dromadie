@@ -1,5 +1,12 @@
 let languages_manager = GSourceView.source_languages_manager ()
 
+let get_lang =
+    match GSourceView.source_language_from_file ~languages_manager "ocaml.lang"
+    with
+    | None -> failwith "No language file available"
+    | Some lang -> lang
+
+(* Reads a file into a buffer, and then returns the buffer *)
 let read_file fn =
     if Sys.file_exists fn then
         let ic = open_in fn in
