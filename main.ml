@@ -1,3 +1,4 @@
+open Files
 open Util
 
 (* Print a message to the terminal *)
@@ -36,7 +37,7 @@ let create_menu label menubar =
     GMenu.menu ~packing:item#set_submenu ()
 
 (* Helper function for adding a new source tab *)
-let add_source_pane buf title (notebook:GPack.notebook) () =
+let add_source_pane fn title (notebook:GPack.notebook) () =
     let tlabel = GMisc.label ~text:title () in
     let scrolled_win = GBin.scrolled_window
     ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC 
@@ -45,11 +46,12 @@ let add_source_pane buf title (notebook:GPack.notebook) () =
     ~auto_indent:true ~insert_spaces_instead_of_tabs:true
     ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true () 
     ~packing:scrolled_win#add in
+    let buf = read_file fn in
     source_view#source_buffer#set_text buf
 
 let main () =
     (* Parse the command line arguments to see what we need to do *)
-    let file = parse_args () in
+    let files = parse_args () in
     (* Setup the window *)
     GMain.Main.init ();
     let window = GWindow.window ~title:"Dromadie" () in
@@ -78,7 +80,9 @@ let main () =
 
     (* And the sourceviews on the right *)
     let source_notebook = GPack.notebook ~packing:(hbox1#pack ~expand:true) () in
-    add_source_pane file "test.ml" source_notebook ();
+    for i=0 to Array.length files - 1 do
+        add_source_pane files.(i) files.(i) source_notebook ()
+    done;
 
     (* Show the window *)
     window#set_allow_shrink true;
