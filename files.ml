@@ -17,3 +17,13 @@ let read_file fn =
         buf
     else
         ""
+
+(* File chooser filter for OCaml files *)
+let ocaml_file_filter () =
+    GFile.filter ~name:"OCaml source code"
+    ~patterns:[ "*.ml"; "*.mli"; "*.mll"; "*.mly" ] ()
+
+(* File chooser filter for All files *)
+let all_file_filter () =
+    GFile.filter ~name:"All files"
+    ~patterns:[ "*.*" ] ()

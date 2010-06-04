@@ -41,6 +41,8 @@ let file_open fn () =
     let filew = GWindow.file_chooser_dialog ~title:"Open ..." ~action:`OPEN () in
     filew#add_button_stock `CANCEL `CANCEL;
     filew#add_select_button_stock `OPEN `OPEN;
+    filew#add_filter (ocaml_file_filter ());
+    filew#add_filter (all_file_filter ());
     begin match filew#run () with
     | `OPEN ->
             begin match filew#filename with
