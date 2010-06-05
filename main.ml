@@ -20,21 +20,27 @@ let destroy () = GMain.Main.quit ()
 (* Helper function for adding a new source tab *)
 let add_source_pane fn (notebook:GPack.notebook) () =
     (* The title for the tab *)
-    let tlabel = GMisc.label ~text:fn () in
+    let hbox = GPack.hbox () in
+    GMisc.label ~text:fn ~packing:hbox#pack ();
+    let close_button =
+        GButton.button ~label:"X" ~packing:(hbox#pack ~padding:5) () in
     (* Create a scrolled window *)
-    let scrolled_win = GBin.scrolled_window
-    ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC 
-    ~packing:(fun w -> ignore(notebook#append_page ~tab_label:tlabel#coerce w)) () in
+    let scrolled_win =
+        GBin.scrolled_window ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC () in
     (* Create and add our source view *)
     let source_view = GSourceView.source_view ~width:640 ~height:480
     ~auto_indent:true ~insert_spaces_instead_of_tabs:true
-    ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true () 
-    ~packing:scrolled_win#add in
+    ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true
+    ~packing:scrolled_win#add () in
     (* Read in the file and display it *)
     let buf = read_file fn in
     source_view#source_buffer#set_text buf;
     source_view#source_buffer#set_language get_lang;
-    source_view#source_buffer#set_highlight true
+    source_view#source_buffer#set_highlight true;
+    notebook#append_page ~tab_label:hbox#coerce scrolled_win#coerce;
+    close_button#connect#clicked ~callback:(
+        fun () -> notebook#remove_page (notebook#page_num scrolled_win#coerce));
+    ()
 
 (* Open a new file *)
 let file_open fn () =
