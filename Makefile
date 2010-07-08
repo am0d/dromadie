@@ -1,26 +1,13 @@
+include src/include.mk
 
-LIBS = lablgtk.cma lablgtksourceview.cma gtkInit.cmo
-# CUSTOM = -custom
+EXEC = dromadie
+
+
+include Makefile.ocaml
 
 CAML_FLAGS = $(CUSTOM) -warn-error As -w Aelzs -I +lablgtk2
+LIBS = lablgtk.cma lablgtksourceview.cma gtkInit.cmx
 
-SRCS = \
-     files.ml util.ml main.ml 
-
-OBJS = $(SRCS:.ml=.cmo)
-
-all: dromadie
-
-clean:
-	rm -rf *.cmi *.cmo *.cmx *.omc *.o *.obj *.opt *~ dromadie
-
-.SUFFIXES: .ml .cmo .cmx .opt
-
-dromadie: $(OBJS)
-	ocamlc $(CAML_FLAGS) -o $@ $(LIBS) $(OBJS)
-
-.ml.cmo:
-	ocamlc -c $(CAML_FLAGS) $<
-
-.ml.cmx:
-	ocamlopt -c $(CAML_FLAGS) $<
+CAMLC = ocamlc -I src $(CAML_FLAGS)
+CAMLOPT = ocamlopt -I src $(CAML_FLAGS)
+CAMLDEP = ocamldep -I src 
