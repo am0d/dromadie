@@ -3,15 +3,11 @@
 
 1. #####Building
 
-    You have 2 options for building Dromadie.  The first (and preferred method) is using `omake`.
-    To build with `omake`, change into the Dromadie directory and type
-
-        omake
-    The second option is to use a standard make command.  In the dromadie directory, type
+    To build dromadie, use the standard make command.  In the dromadie directory, type
 
         make
-    Note, however, that if you use the standard Makefile, no package checks are performed, whereas
-    omake will check that you have the required packages installed on your system.
+    Note, however, that no package checks are performed, so you will have to manually 
+    check that you have the required packages installed on your system.
 
 2. #####Requirements
 
