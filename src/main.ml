@@ -23,7 +23,8 @@ let add_source_pane fn (notebook:GPack.notebook) () =
     let hbox = GPack.hbox () in
     GMisc.label ~text:fn ~packing:hbox#pack ();
     let close_button =
-        GButton.button ~label:"X" ~packing:(hbox#pack ~padding:5) () in
+        GButton.button ~packing:(hbox#pack ~padding:5) () in
+    GMisc.image ~stock:`CLOSE ~icon_size:`MENU ~packing:close_button#add ();
     (* Create a scrolled window *)
     let scrolled_win =
         GBin.scrolled_window ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC () in
