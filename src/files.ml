@@ -1,10 +1,23 @@
+open Util
+
 let languages_manager = GSourceView.source_languages_manager ()
 
-let get_lang =
-    match GSourceView.source_language_from_file ~languages_manager "ocaml.lang"
-    with
-    | None -> failwith "No language file available"
-    | Some lang -> lang
+(* Load the language with the specified mime-type *)
+let language lang =
+        languages_manager#get_language_from_mime_type lang
+
+(* Try to match the file's extension with a known mime type and load that
+ * language *)
+let get_lang fn =
+    try
+        match extension fn with
+        | "ml"
+        | "mli"
+        | "mll"
+        | "mly" -> language "text/x-ocaml"
+        | _ -> language "text/plain"
+    with Not_found ->
+        None
 
 (* Reads a file into a buffer, and then returns the buffer *)
 let read_file fn =
@@ -26,4 +39,4 @@ let ocaml_file_filter () =
 (* File chooser filter for All files *)
 let all_file_filter () =
     GFile.filter ~name:"All files"
-    ~patterns:[ "*.*" ] ()
+    ~patterns:[ "*" ] ()

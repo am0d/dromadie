@@ -1,1 +1,1 @@
-SOURCES += src/files.ml src/util.ml src/main.ml
+SOURCES += src/util.ml src/files.ml src/main.ml

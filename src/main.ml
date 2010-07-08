@@ -35,8 +35,13 @@ let add_source_pane fn (notebook:GPack.notebook) () =
     (* Read in the file and display it *)
     let buf = read_file fn in
     source_view#source_buffer#set_text buf;
-    source_view#source_buffer#set_language get_lang;
-    source_view#source_buffer#set_highlight true;
+    begin match (get_lang fn) with
+          None -> ();
+        | Some lang -> begin
+            source_view#source_buffer#set_language lang;
+            source_view#source_buffer#set_highlight true;
+        end;
+    end;
     notebook#append_page ~tab_label:hbox#coerce scrolled_win#coerce;
     close_button#connect#clicked ~callback:(
         fun () -> notebook#remove_page (notebook#page_num scrolled_win#coerce));
@@ -119,4 +124,4 @@ let main () =
     window#show ();
     GMain.Main.main ()
 
-let _ = main ()
+let _ = Printexc.print main ()
