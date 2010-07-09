@@ -2,7 +2,12 @@ open Files
 open Util
 
 (* Global variables - ugh! *)
-let source_notebook = GPack.notebook ()
+(* The notebook that holds all the source tabs *)
+let source_notebook = GPack.notebook ();;
+(* The currently open tabs - this is mutable so that we can 
+ * add / remove tabs as necessary
+ *)
+let tabs = ref [];;
 
 (* Print a message to the terminal *)
 let print msg () =
@@ -16,6 +21,12 @@ let delete_event ev =
 
 (* Close our main window *)
 let destroy () = GMain.Main.quit ()
+
+(* Close a tab off nicely (saving, etc.) *)
+let close_tab fn () =
+    let page = List.assoc fn !tabs in
+    source_notebook#remove_page (source_notebook#page_num page#coerce);
+    ()
 
 (* Helper function for adding a new source tab *)
 let add_source_pane fn (notebook:GPack.notebook) () =
@@ -44,8 +55,8 @@ let add_source_pane fn (notebook:GPack.notebook) () =
         end;
     end;
     notebook#append_page ~tab_label:hbox#coerce scrolled_win#coerce;
-    close_button#connect#clicked ~callback:(
-        fun () -> notebook#remove_page (notebook#page_num scrolled_win#coerce));
+    close_button#connect#clicked ~callback:(close_tab (Files.abspath fn));
+    tabs := ((Files.abspath fn), scrolled_win)::!tabs;
     ()
 
 (* Show a file open dialog and then load that file into a new tab *)
