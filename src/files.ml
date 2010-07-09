@@ -41,3 +41,10 @@ let ocaml_file_filter () =
 let all_file_filter () =
     GFile.filter ~name:"All files"
     ~patterns:[ "*" ] ()
+
+(* Return the absolute path for fn *)
+let abspath fn =
+    if Filename.is_relative fn then
+            (Sys.getcwd ()) ^ "/" ^ fn
+    else
+        fn
