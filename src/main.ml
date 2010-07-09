@@ -21,7 +21,7 @@ let destroy () = GMain.Main.quit ()
 let add_source_pane fn (notebook:GPack.notebook) () =
     (* The title for the tab *)
     let hbox = GPack.hbox () in
-    GMisc.label ~text:fn ~packing:hbox#pack ();
+    GMisc.label ~text:(Filename.basename fn) ~packing:hbox#pack ();
     let close_button =
         GButton.button ~packing:(hbox#pack ~padding:5) () in
     GMisc.image ~stock:`CLOSE ~icon_size:`MENU ~packing:close_button#add ();
