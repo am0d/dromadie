@@ -1,5 +1,6 @@
 open Util
 
+(* A global language manager for source highlighting *)
 let languages_manager = GSourceView.source_languages_manager ()
 
 (* Load the language with the specified mime-type *)

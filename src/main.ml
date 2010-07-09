@@ -9,7 +9,7 @@ let print msg () =
     print_endline msg;
     flush stdout
 
-(* We need this here because eventually we will need to ask the user if the are
+(* We need this here because eventually we will need to ask the user if they are
 sure they want to quit *)
 let delete_event ev =
     false
@@ -30,9 +30,9 @@ let add_source_pane fn (notebook:GPack.notebook) () =
         GBin.scrolled_window ~hpolicy:`AUTOMATIC ~vpolicy:`AUTOMATIC () in
     (* Create and add our source view *)
     let source_view = GSourceView.source_view ~width:640 ~height:480
-    ~auto_indent:true ~insert_spaces_instead_of_tabs:true
-    ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true
-    ~packing:scrolled_win#add () in
+        ~auto_indent:true ~insert_spaces_instead_of_tabs:true
+        ~show_line_numbers:true ~tabs_width:4 ~margin:80 ~show_margin:true
+        ~packing:scrolled_win#add () in
     (* Read in the file and display it *)
     let buf = read_file fn in
     source_view#source_buffer#set_text buf;
@@ -48,7 +48,7 @@ let add_source_pane fn (notebook:GPack.notebook) () =
         fun () -> notebook#remove_page (notebook#page_num scrolled_win#coerce));
     ()
 
-(* Open a new file *)
+(* Show a file open dialog and then load that file into a new tab *)
 let file_open fn () =
     let filew = GWindow.file_chooser_dialog ~title:"Open ..." ~action:`OPEN () in
     filew#add_button_stock `CANCEL `CANCEL;
@@ -56,12 +56,13 @@ let file_open fn () =
     filew#add_filter (ocaml_file_filter ());
     filew#add_filter (all_file_filter ());
     begin match filew#run () with
-    | `OPEN ->
+        | `OPEN ->
             begin match filew#filename with
             | None -> ()
             | Some fn -> add_source_pane fn source_notebook ()
             end
-    | `DELETE_EVENT | `CANCEL -> ()
+        | `DELETE_EVENT 
+        | `CANCEL -> ()
     end;
     filew#destroy ()
 
