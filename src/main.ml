@@ -70,7 +70,13 @@ let file_open fn () =
         | `OPEN ->
             begin match filew#filename with
             | None -> ()
-            | Some fn -> add_source_pane fn source_notebook ()
+            | Some fn -> try
+                let page = List.assoc fn !tabs in
+                let page_num = source_notebook#page_num page#coerce in
+                source_notebook#goto_page page_num;
+                ()
+                with Not_found ->
+                    add_source_pane fn source_notebook ()
             end
         | `DELETE_EVENT 
         | `CANCEL -> ()
