@@ -54,9 +54,11 @@ let add_source_pane fn (notebook:GPack.notebook) () =
             source_view#source_buffer#set_highlight true;
         end;
     end;
-    notebook#append_page ~tab_label:hbox#coerce scrolled_win#coerce;
+    let page_num = notebook#append_page ~tab_label:hbox#coerce
+                    scrolled_win#coerce in
     close_button#connect#clicked ~callback:(close_tab (Files.abspath fn));
     tabs := ((Files.abspath fn), scrolled_win)::!tabs;
+    source_notebook#goto_page page_num;
     ()
 
 (* Show a file open dialog and then load that file into a new tab *)
